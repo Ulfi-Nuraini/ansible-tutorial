@@ -1,0 +1,21 @@
+---
+
+- hosts: all
+  become: yes
+  tasks:
+    - name: Set a login banner
+      copy:
+        dest: "{{ item }}"
+        src: /etc/issue
+        owner: root
+        group: root
+        mode: 0644
+      with_items:
+        - /etc/issue
+        - /etc/issue.net
+
+  handlers:
+    - name: Reload SSH
+      service:
+        name: sshd
+        state: reloaded
